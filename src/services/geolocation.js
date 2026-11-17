@@ -37,10 +37,10 @@ export function validateCoordinates(lat, lon, label = 'Coordinates') {
     throw new TypeError(`${label} must be valid finite numbers: lat=${lat}, lon=${lon}`);
   }
   if (lat < -90.0 || lat > 90.0) {
-    throw new RangeError(`Latitude must be between -90.0 and +90.0 degrees: ${lat}`);
+    throw new RangeError(`Latitude out of range: must be between -90.0 and +90.0 degrees: ${lat}`);
   }
   if (lon < -180.0 || lon > 180.0) {
-    throw new RangeError(`Longitude must be between -180.0 and +180.0 degrees: ${lon}`);
+    throw new RangeError(`Longitude out of range: must be between -180.0 and +180.0 degrees: ${lon}`);
   }
 }
 

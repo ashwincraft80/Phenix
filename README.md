@@ -29,7 +29,7 @@ Industrial manufacturing produces millions of metric tons of mineral, chemical, 
 | **Team Number** | `T0010` |
 | **Group Lead** | **Ashwin Maurya** (Enrollment: `2501010099`, GitHub: [`WhiteShadow005`](https://github.com/WhiteShadow005)) |
 | **Member 1 (Lead)** | Ashwin Maurya (`2501010099`) — Core Service, Gateway, Domain Schemas & Matchmaking |
-| **Member 2** | Arnav Gupta (`2501010080`) — Logistics Optimization & Verification |
+| **Member 2** | Arnav Gupta (`2501010080`, GitHub: [`WhiteShadow005`](https://github.com/WhiteShadow005)) — Logistics Optimization, Deal State Machine & ESG Impact Engine |
 | **Member 3** | Shaurya Pratap Singh (`2501010591`, GitHub: [`sps-exe`](https://github.com/sps-exe)) — Geolocation & Spatial Indexing |
 | **Member 4** | Yashvardhan Mundhra (`2501010527`) — ESG Analytics & Impact Accounting |
 | **Target DBMS Engine** | PostgreSQL 16 (Dual ANSI SQL / SQLite 3.38+ compatible) |

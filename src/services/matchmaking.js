@@ -257,7 +257,7 @@ export function calculateMatchScore(supplyListing, demandReq, distanceKm = 0, or
   let eligible = true;
 
   // Hard zero threshold: if S_mat < 0.50, candidate is deemed fundamentally incompatible
-  if (matResult.score < 0.50) {
+  if (matResult.score < 0.50 || qtyResult.score === 0.0 || proxResult.score === 0.0) {
     netScore = 0.0;
     eligible = false;
     allReasons.push(`Hard incompatibility: Material compatibility score (${matResult.score.toFixed(3)}) is below 0.50 threshold`);

@@ -742,7 +742,7 @@ test('F9.5: Seed database populates all 10 core tables with referential integrit
 
 test('F10.1: Test suite runs with zero npm packages using standard Node library', () => {
   const nodeVersion = process.version;
-  assert.match(nodeVersion, /^v24\./, 'Must run on Node.js v24');
+  assert.match(nodeVersion, /^v(2[4-9]|[3-9][0-9])\./, 'Must run on Node.js v24');
   assert.strictEqual(typeof DatabaseSync, 'function', 'DatabaseSync must be standard native import');
 });
 

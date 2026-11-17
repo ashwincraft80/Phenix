@@ -41,3 +41,24 @@ export {
 export {
   SCHEMA_SQL
 } from './db/schema.js';
+
+// Member 2: Logistics, Deal Lifecycle & ESG Impact Analytics
+export {
+  ESG_BENCHMARKS,
+  DEFAULT_FACTOR,
+  FREIGHT_EMISSION_FACTOR_KG_PER_TON_KM,
+  KG_CO2_PER_TREE_YEAR,
+  resolveBenchmark,
+  calculateDealImpact
+} from './services/esgFormulas.js';
+
+export {
+  DEAL_STATUSES,
+  DEAL_STAGES,
+  DealService
+} from './services/dealService.js';
+
+export {
+  ImpactService
+} from './services/impactService.js';
+

@@ -1,0 +1,28 @@
+{
+  "name": "symbiolink-server",
+  "version": "1.0.0",
+  "description": "SymbioLink B2B Industrial Byproduct Exchange & ESG Impact Engine (Viksit Bharat 2026)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js",
+    "test": "node test/member2.test.js"
+  },
+  "keywords": [
+    "circular-economy",
+    "industrial-symbiosis",
+    "b2b-exchange",
+    "esg",
+    "sebi-brsr",
+    "scope-3"
+  ],
+  "author": "Member 2 - Backend Logistics & Impact Analytics Lead",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}

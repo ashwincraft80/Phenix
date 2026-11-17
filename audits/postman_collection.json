@@ -1,0 +1,149 @@
+{
+  "info": {
+    "name": "SymbioLink Member 2 API Collection",
+    "description": "Postman Collection for B2B Resource Exchange & ESG Impact Engine (Member 2 Deliverables)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5001",
+      "type": "string"
+    },
+    {
+      "key": "dealId",
+      "value": "deal_001_slag",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "ESG Analytics - Aggregate Impact",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/impact/aggregate",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "impact", "aggregate"]
+        }
+      }
+    },
+    {
+      "name": "ESG Analytics - SEBI BRSR Certificate",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/impact/certificate/{{dealId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "impact", "certificate", "{{dealId}}"]
+        }
+      }
+    },
+    {
+      "name": "ESG Analytics - Preview Calculation",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"material\": \"Blast Furnace Slag\",\n  \"materialCategory\": \"Industrial Slag\",\n  \"quantityTons\": 500,\n  \"distanceKm\": 42.5,\n  \"agreedPricePerTon\": 850\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/impact/calculate-preview",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "impact", "calculate-preview"]
+        }
+      }
+    },
+    {
+      "name": "Deals - List All Deals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/deals",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals"]
+        }
+      }
+    },
+    {
+      "name": "Deals - Get Single Deal",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/deals/{{dealId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals", "{{dealId}}"]
+        }
+      }
+    },
+    {
+      "name": "Deals - Initiate Deal from Match",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"targetListingId\": \"L1\",\n  \"matchedListingId\": \"L20\",\n  \"supplierCompanyId\": \"comp_tata_steel\",\n  \"buyerCompanyId\": \"comp_prism_cement\",\n  \"material\": \"Blast Furnace Slag\",\n  \"materialCategory\": \"Industrial Slag\",\n  \"quantity\": 500,\n  \"pricePerTon\": 850,\n  \"logistics\": { \"distanceKm\": 42.5 }\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/deals",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals"]
+        }
+      }
+    },
+    {
+      "name": "Deals - Simulate Escrow Handshake",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"escrowAmount\": 425000,\n  \"notes\": \"Simulated Escrow deposit locked.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/deals/{{dealId}}/simulate-escrow",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals", "{{dealId}}", "simulate-escrow"]
+        }
+      }
+    },
+    {
+      "name": "Deals - Advance to Logistics Dispatched",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"LOGISTICS_DISPATCHED\",\n  \"vehicleNumber\": \"JH-05-CD-4421\",\n  \"notes\": \"Gate pass GP-JAM-2026-8941 cleared with digital manifest.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/deals/{{dealId}}/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals", "{{dealId}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "Deals - Advance to Delivered & Weighbridge Verified",
+      "request": {
+        "method": "PATCH",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"DELIVERED_VERIFIED\",\n  \"verifiedTonnage\": 500,\n  \"weighbridgeSlipNumber\": \"WB-CHAIBASA-8812\",\n  \"notes\": \"500T net certified. BRSR hash created.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/deals/{{dealId}}/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "deals", "{{dealId}}", "status"]
+        }
+      }
+    }
+  ]
+}
