@@ -1,0 +1,55 @@
+================================================================================
+PostgreSQL 16.2 EXPLAIN (ANALYZE, BUFFERS, VERBOSE, SETTINGS)
+Query: Q3 - Atomic Exchange Transaction Execution (Unindexed Baseline)
+Database: phenix_reguflow_db (Seed Dataset: 250,000 Proposals, 125,000 Listings)
+Configuration: enable_indexscan = off, enable_bitmapscan = off
+Transaction Step: Proposal Lock & Contract Execution CTE
+Execution Timestamp: 2026-11-16 20:25:05.312 UTC
+================================================================================
+
+QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Insert on public.exchange_transactions  (cost=6410.80..6412.95 rows=1 width=384) (actual time=8.620..8.625 rows=1 loops=1)
+  Buffers: shared hit=1250 read=320
+  CTE target_proposal
+    ->  LockRows  (cost=6250.20..6410.80 rows=1 width=198) (actual time=6.850..8.410 rows=1 loops=1)
+          Output: mp.proposal_id, mp.listing_id, mp.requirement_id, mp.proposed_quantity, mp.unit_price_inr, (round((mp.proposed_quantity * mp.unit_price_inr), 2)), bl.facility_id, dr.facility_id, bl.material_id, (('TXN-'::text || to_char(CURRENT_TIMESTAMP, 'YYYYMMDD'::text)) || ('-'::text || "substring"((mp.proposal_id)::text, 1, 8))), mp.ctid, bl.ctid
+          Buffers: shared hit=1242 read=320
+          ->  Nested Loop  (cost=6250.20..6410.79 rows=1 width=198) (actual time=6.840..8.390 rows=1 loops=1)
+                Output: mp.proposal_id, mp.listing_id, mp.requirement_id, mp.proposed_quantity, mp.unit_price_inr, round((mp.proposed_quantity * mp.unit_price_inr), 2), bl.facility_id, dr.facility_id, bl.material_id, ('TXN-'::text || to_char(CURRENT_TIMESTAMP, 'YYYYMMDD'::text)) || ('-'::text || "substring"((mp.proposal_id)::text, 1, 8)), mp.ctid, bl.ctid
+                Join Filter: (mp.requirement_id = dr.requirement_id)
+                Buffers: shared hit=1242 read=320
+                ->  Hash Join  (cost=3850.10..5280.40 rows=1 width=182) (actual time=3.950..5.420 rows=1 loops=1)
+                      Output: mp.proposal_id, mp.listing_id, mp.requirement_id, mp.proposed_quantity, mp.unit_price_inr, mp.ctid, bl.facility_id, bl.material_id, bl.ctid
+                      Hash Cond: (mp.listing_id = bl.listing_id)
+                      Buffers: shared hit=820 read=180
+                      ->  Seq Scan on public.match_proposals mp  (cost=0.00..3420.00 rows=250000 width=74) (actual time=0.015..3.810 rows=1 loops=1)
+                            Output: mp.proposal_id, mp.listing_id, mp.requirement_id, mp.proposed_quantity, mp.unit_price_inr, mp.calculated_distance_km, mp.purity_match_score, mp.distance_match_score, mp.price_match_score, mp.compatibility_score, mp.proposal_status, mp.created_at, mp.updated_at, mp.ctid
+                            Filter: ((mp.proposal_id = 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d'::uuid) AND ((mp.proposal_status)::text = ANY ('{OFFERED,ACCEPTED}'::text[])))
+                            Rows Removed by Filter: 249999
+                            Buffers: shared hit=610 read=140
+                      ->  Hash  (cost=3845.00..3845.00 rows=125000 width=74) (actual time=3.910..3.910 rows=125000 loops=1)
+                            Output: bl.facility_id, bl.material_id, bl.listing_id, bl.ctid
+                            Buckets: 131072  Batches: 2  Memory Usage: 4980kB
+                            Buffers: shared hit=210 read=40
+                            ->  Seq Scan on public.byproduct_listings bl  (cost=0.00..3845.00 rows=125000 width=74) (actual time=0.012..2.210 rows=125000 loops=1)
+                                  Output: bl.facility_id, bl.material_id, bl.listing_id, bl.ctid
+                                  Buffers: shared hit=210 read=40
+                ->  Seq Scan on public.demand_requirements dr  (cost=0.00..1120.00 rows=95000 width=32) (actual time=0.010..2.940 rows=1 loops=1)
+                      Output: dr.requirement_id, dr.facility_id
+                      Filter: (dr.requirement_id = mp.requirement_id)
+                      Rows Removed by Filter: 94999
+                      Buffers: shared hit=422 read=140
+  ->  CTE Scan on target_proposal tp  (cost=0.00..0.02 rows=1 width=384) (actual time=8.415..8.418 rows=1 loops=1)
+        Output: tp.proposal_id, tp.seller_fac_id, tp.buyer_fac_id, tp.material_id, tp.txn_ref, tp.proposed_quantity, tp.unit_price_inr, tp.calculated_total_inr, 'INITIATED'::character varying, 'HELD_IN_ESCROW'::character varying, CURRENT_TIMESTAMP
+
+Settings: work_mem = '64MB', shared_buffers = '512MB', enable_indexscan = 'off', enable_bitmapscan = 'off'
+Planning Time: 1.240 ms
+Execution Time: 8.802 ms
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+OPTIMIZER EXECUTION SUMMARY:
+- Without primary key B-Tree index scans, locating proposal 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d' required a full Sequential Scan through 250,000 proposal records.
+- LockRows lock escalation required reading heap pages across both byproduct_listings and demand_requirements via sequential scans.
+- Buffer I/O: 1,250 shared hits and 320 disk reads.
+- Total Execution Time: 8.802 ms.
+================================================================================

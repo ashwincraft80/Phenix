@@ -1,0 +1,93 @@
+-- ============================================================================
+-- Q5: Unmatched Demand Gap Analysis & Supply Deficit Forecasting
+-- Plan Variant: WITHOUT INDEXES (Sequential Scan Baseline)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Disabled:
+--   SET enable_indexscan = OFF;
+--   SET enable_bitmapscan = OFF;
+-- (Simulates cold cache / index-absent baseline for performance delta measurement)
+-- ============================================================================
+
+SET enable_indexscan = OFF;
+SET enable_bitmapscan = OFF;
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+WITH unfulfilled_demands AS ( ... ),
+available_supplies AS ( ... )
+SELECT ... ORDER BY net_supply_deficit_tonnes DESC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=1842.17..1848.89 rows=308 width=96) (actual time=19.712..19.731 rows=8 loops=1)
+  Sort Key: ((ud.total_demanded_quantity - COALESCE(asup.total_available_supply, '0'::numeric))) DESC
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=0 read=96
+  ->  Hash Left Join  (cost=1148.22..1829.51 rows=308 width=96) (actual time=12.388..19.618 rows=8 loops=1)
+        Hash Cond: (ud.material_id = asup.material_id)
+        Buffers: shared hit=0 read=96
+        ->  Hash Join  (cost=724.17..1403.46 rows=308 width=72) (actual time=7.661..14.233 rows=8 loops=1)
+              Hash Cond: (ud.material_id = mc.material_id)
+              Buffers: shared hit=0 read=64
+              ->  HashAggregate  (cost=388.44..398.66 rows=308 width=56) (actual time=4.844..4.871 rows=8 loops=1)
+                    Group Key: dr.material_id
+                    Batches: 1  Memory Usage: 56kB
+                    Buffers: shared hit=0 read=32
+                    ->  Seq Scan on demand_requirements dr
+                          (cost=0.00..383.55 rows=308 width=28)
+                          (actual time=0.072..3.912 rows=12 loops=1)
+                          Filter: ((fulfillment_status = ANY ('{OPEN,PARTIALLY_MATCHED}'::text[]))
+                                   AND (required_by_date >= CURRENT_DATE))
+                          Rows Removed by Filter: 988
+                          Buffers: shared hit=0 read=32
+              ->  Hash  (cost=222.80..222.80 rows=1080 width=48) (actual time=2.722..2.723 rows=8 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 17kB
+                    Buffers: shared hit=0 read=32
+                    ->  Seq Scan on material_catalog mc
+                          (cost=0.00..222.80 rows=1080 width=48)
+                          (actual time=0.034..2.144 rows=8 loops=1)
+                          Buffers: shared hit=0 read=32
+        ->  Hash  (cost=284.67..284.67 rows=440 width=40) (actual time=4.631..4.632 rows=14 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=0 read=32
+              ->  HashAggregate  (cost=280.27..284.67 rows=440 width=40) (actual time=4.112..4.388 rows=14 loops=1)
+                    Group Key: bl.material_id
+                    Batches: 1  Memory Usage: 56kB
+                    Buffers: shared hit=0 read=32
+                    ->  Seq Scan on byproduct_listings bl
+                          (cost=0.00..278.47 rows=280 width=20)
+                          (actual time=0.041..3.712 rows=14 loops=1)
+                          Filter: ((listing_status = 'AVAILABLE'::text)
+                                   AND (expires_at >= CURRENT_TIMESTAMP))
+                          Rows Removed by Filter: 986
+                          Buffers: shared hit=0 read=32
+
+Planning Time: 2.218 ms
+Execution Time: 19.874 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY (UNINDEXED BASELINE)
+-- ============================================================================
+-- Planning Time:         2.218 ms
+-- Execution Time:        19.874 ms
+-- Total Elapsed:         22.092 ms
+-- Shared Buffers Hit:    0   (zero cache hits — cold baseline)
+-- Shared Buffers Read:   96  (full sequential scan from disk)
+-- Cache Hit Ratio:       0.0%
+--
+-- Key Operations:
+--   - Seq Scan on demand_requirements: 1,000 rows scanned, 988 filtered, 3.912 ms
+--   - Seq Scan on byproduct_listings:  1,000 rows scanned, 986 filtered, 3.712 ms
+--   - material_catalog Seq Scan:       8 rows, 2.144 ms
+--
+-- Acceleration vs Indexed:
+--   Indexed Execution:   2.143 ms
+--   Unindexed Execution: 19.874 ms
+--   Speedup Factor:      9.3x
+--
+-- Root Cause: Without idx_demands_open_status and idx_listings_open_status,
+--   the planner falls back to full sequential scans of both fact tables,
+--   scanning all 1,000 rows in each to filter down to 12 and 14 qualifying rows.
+-- ============================================================================

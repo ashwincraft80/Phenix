@@ -1,0 +1,175 @@
+erDiagram
+    ORGANIZATIONS ||--o{ FACILITIES : "owns_and_operates"
+    ORGANIZATIONS ||--o{ LOGISTICS_TRANSITS : "carries_haulage"
+    ORGANIZATIONS |o--o{ AUDIT_LOGS : "performs_action"
+
+    FACILITIES ||--o{ BYPRODUCT_LISTINGS : "supplies_output"
+    FACILITIES ||--o{ DEMAND_REQUIREMENTS : "demands_input"
+    FACILITIES ||--o{ EXCHANGE_TRANSACTIONS : "sells_as_source"
+    FACILITIES ||--o{ EXCHANGE_TRANSACTIONS : "buys_as_sink"
+
+    MATERIAL_CATALOG ||--o{ BYPRODUCT_LISTINGS : "classifies_listing"
+    MATERIAL_CATALOG ||--o{ DEMAND_REQUIREMENTS : "specifies_demand"
+    MATERIAL_CATALOG ||--o{ EXCHANGE_TRANSACTIONS : "exchanged_in"
+
+    BYPRODUCT_LISTINGS ||--o{ MATCH_PROPOSALS : "supplies_proposal"
+    DEMAND_REQUIREMENTS ||--o{ MATCH_PROPOSALS : "receives_proposal"
+
+    MATCH_PROPOSALS ||--o| EXCHANGE_TRANSACTIONS : "executes_into"
+
+    EXCHANGE_TRANSACTIONS ||--o{ LOGISTICS_TRANSITS : "transported_via"
+    EXCHANGE_TRANSACTIONS ||--o| ESG_IMPACT_METRICS : "quantifies_impact"
+
+    ORGANIZATIONS {
+        uuid org_id PK "Primary Key"
+        string org_code UK "Unique Company Identifier"
+        string legal_name "Registered Entity Name"
+        string trade_name "Commercial Brand Name"
+        string tax_identifier UK "GSTIN / Corporate Tax ID"
+        string industry_sector "STEEL | CEMENT | CHEMICALS"
+        string organization_type "PRODUCER | CONSUMER | RECYCLER | CARRIER"
+        numeric esg_rating_score "0.00 to 100.00"
+        timestamp created_at "Registration Timestamp"
+        timestamp updated_at "Profile Update Timestamp"
+    }
+
+    FACILITIES {
+        uuid facility_id PK "Primary Key"
+        uuid org_id FK "References ORGANIZATIONS"
+        string facility_code UK "Unique Facility Code"
+        string facility_name "Plant / Site Name"
+        string facility_type "MANUFACTURING | SMELTER | REFINERY"
+        string industrial_cluster "Industrial Corridor / MIDC / GIDC"
+        string address_line1 "Physical Street Address"
+        string city "Municipal City"
+        string state "Administrative State"
+        string postal_code "Postal PIN Code"
+        numeric latitude "Geographic Latitude (-90 to +90)"
+        numeric longitude "Geographic Longitude (-180 to +180)"
+        timestamp created_at "Facility Registration Timestamp"
+        timestamp updated_at "Facility Update Timestamp"
+    }
+
+    MATERIAL_CATALOG {
+        uuid material_id PK "Primary Key"
+        string material_code UK "Standard Material Identifier"
+        string common_name "Byproduct Commercial Name"
+        string cas_registry_number "Chemical Abstracts Service No"
+        string material_category "SLAG | FLY_ASH | SLUDGE | GYPSUM"
+        string physical_state "SOLID_POWDER | SOLID_GRANULAR | LIQUID | SLUDGE"
+        string hazard_classification "NON_HAZARDOUS | HAZARDOUS_CLASS_1"
+        string standard_unit "METRIC_TONNE | KILOGRAM | LITRE"
+        numeric co2e_factor_kg_per_unit "Baseline Scope 3 Factor"
+        numeric circular_potential_score "Circularity Rating 0.00 to 100.00"
+        timestamp created_at "Taxonomy Creation Timestamp"
+    }
+
+    BYPRODUCT_LISTINGS {
+        uuid listing_id PK "Primary Key"
+        uuid facility_id FK "Seller Plant Site"
+        uuid material_id FK "Material Classification"
+        string listing_reference UK "Human-Readable Listing Code"
+        numeric quantity_available "Available Volume in Std Units"
+        numeric minimum_order_quantity "MOQ Threshold"
+        numeric batch_purity_percent "Assayed Chemical Purity (0-100%)"
+        numeric moisture_content_percent "Moisture Content (0-100%)"
+        numeric price_per_unit_inr "Unit Price in INR (>= 0)"
+        string storage_condition "SILO | OPEN_YARD | COVERED_SHED"
+        string listing_status "AVAILABLE | RESERVED | FULFILLED | EXPIRED"
+        timestamp available_from "Supply Availability Date"
+        timestamp expires_at "Listing Expiration Horizon"
+        timestamp created_at "Listing Creation Timestamp"
+        timestamp updated_at "Listing Modification Timestamp"
+    }
+
+    DEMAND_REQUIREMENTS {
+        uuid requirement_id PK "Primary Key"
+        uuid facility_id FK "Buyer Plant Site"
+        uuid material_id FK "Required Material Taxonomy"
+        string requirement_reference UK "Human-Readable Demand Code"
+        numeric quantity_required "Procurement Target Volume"
+        numeric min_acceptable_purity "Minimum Tolerated Purity %"
+        numeric max_acceptable_moisture "Maximum Tolerated Moisture %"
+        numeric max_unit_budget_inr "Maximum Procurement Budget INR"
+        numeric max_distance_km "Maximum Logistical Haulage Radius"
+        string fulfillment_status "OPEN | MATCHED | FULFILLED | CANCELLED"
+        timestamp required_by_date "Procurement Deadline"
+        timestamp created_at "Demand Creation Timestamp"
+        timestamp updated_at "Demand Update Timestamp"
+    }
+
+    MATCH_PROPOSALS {
+        uuid proposal_id PK "Primary Key"
+        uuid listing_id FK "Source Supply Listing"
+        uuid requirement_id FK "Target Demand Requirement"
+        numeric proposed_quantity "Algorithmically Sized Volume"
+        numeric unit_price_inr "Proposed Transfer Price"
+        numeric calculated_distance_km "Haversine Distance (km)"
+        numeric purity_match_score "Purity Compatibility (0-100)"
+        numeric distance_match_score "Proximity Compatibility (0-100)"
+        numeric price_match_score "Commercial Spread Score (0-100)"
+        numeric compatibility_score "Composite Match Score (0-100)"
+        string proposal_status "OFFERED | ACCEPTED | REJECTED | EXPIRED"
+        timestamp created_at "Proposal Generation Timestamp"
+        timestamp updated_at "Status Transition Timestamp"
+    }
+
+    EXCHANGE_TRANSACTIONS {
+        uuid transaction_id PK "Primary Key"
+        uuid proposal_id FK "Unique Confirmed Proposal"
+        uuid seller_facility_id FK "Supplying Facility"
+        uuid buyer_facility_id FK "Consuming Facility"
+        uuid material_id FK "Material Exchanged"
+        string transaction_reference UK "Contract Invoice Reference"
+        numeric agreed_quantity "Binding Transferred Quantity"
+        numeric agreed_unit_price_inr "Binding Agreed Unit Price"
+        numeric agreed_total_inr "Frozen Commercial Total INR"
+        string transaction_status "INITIATED | IN_TRANSIT | DELIVERED | SETTLED"
+        string payment_status "PENDING | HELD_IN_ESCROW | RELEASED | REFUNDED"
+        timestamp contract_signed_at "Legal Execution Timestamp"
+        timestamp settled_at "Escrow Settlement Timestamp"
+        timestamp created_at "Transaction Record Timestamp"
+        timestamp updated_at "Transaction Update Timestamp"
+    }
+
+    LOGISTICS_TRANSITS {
+        uuid transit_id PK "Primary Key"
+        uuid transaction_id FK "Commercial Transaction Contract"
+        uuid carrier_org_id FK "Licensed Freight Carrier"
+        string transit_reference UK "Unique Shipment Tracking Code"
+        string e_way_bill_number UK "Statutory GST E-Way Bill Number"
+        string vehicle_registration_number "Haulage Truck Vehicle Reg"
+        timestamp dispatch_date "Plant Gate Dispatch Timestamp"
+        timestamp delivery_date "Destination Arrival Timestamp"
+        string transit_status "SCHEDULED | DISPATCHED | IN_TRANSIT | DELIVERED"
+        numeric weighbridge_gross_kg "Loaded Vehicle Gross Weight (kg)"
+        numeric weighbridge_tare_kg "Empty Vehicle Tare Weight (kg)"
+        numeric weighbridge_net_kg "GENERATED Net Cargo Weight (kg)"
+        timestamp created_at "Consignment Creation Timestamp"
+        timestamp updated_at "Transit Update Timestamp"
+    }
+
+    ESG_IMPACT_METRICS {
+        uuid metric_id PK "Primary Key"
+        uuid transaction_id FK "1:1 Binding Transaction"
+        numeric landfill_tonnes_diverted "Physical Waste Diverted (Tonnes)"
+        numeric co2e_tonnes_avoided "Scope 3 GHG Avoided (tCO2e)"
+        numeric virgin_raw_material_saved_tonnes "Displaced Virgin Mineral (Tonnes)"
+        numeric water_cubic_meters_saved "Conserved Industrial Water (m3)"
+        numeric economic_value_saved_inr "Net Arbitrage Savings in INR"
+        numeric circularity_index_score "Ellen MacArthur Circularity Score (0-100)"
+        timestamp calculated_at "Certified Audit Calculation Time"
+    }
+
+    AUDIT_LOGS {
+        bigint log_id PK "Monotonic Sequence Primary Key"
+        string entity_type "ORGANIZATION | TRANSACTION | TRANSIT"
+        string entity_id "UUID of Target Entity Record"
+        string action "INSERT | UPDATE | STATUS_CHANGE"
+        uuid performed_by_org_id FK "Actor Corporate Organization"
+        jsonb previous_state "Pre-Mutation State Payload"
+        jsonb new_state "Post-Mutation State Payload"
+        string sha256_checksum UK "Cryptographic State Digest"
+        string previous_log_checksum "Cryptographic Hash-Chain Link"
+        timestamp logged_at "Cryptographic Timestamp"
+    }

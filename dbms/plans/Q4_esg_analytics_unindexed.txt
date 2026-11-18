@@ -1,0 +1,64 @@
+================================================================================
+PostgreSQL 16.2 EXPLAIN (ANALYZE, BUFFERS, VERBOSE, SETTINGS)
+Query: Q4 - Regional ESG Impact & Circularity Index Analytics (Unindexed Baseline)
+Database: phenix_reguflow_db (Seed Dataset: 68,000 Transactions, 68,000 Impact Metrics)
+Configuration: enable_indexscan = off, enable_bitmapscan = off
+Execution Timestamp: 2026-11-16 20:29:14.502 UTC
+================================================================================
+
+QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+WindowAgg  (cost=7845.20..7920.40 rows=25 width=248) (actual time=23.815..23.980 rows=18 loops=1)
+  Output: csm.industrial_cluster, csm.settled_transactions_count, csm.unique_materials_exchanged, csm.active_seller_facilities_count, csm.active_buyer_facilities_count, round(csm.total_byproduct_tonnes_exchanged, 2), round(csm.total_landfill_tonnes_diverted, 2), round(csm.total_co2e_tonnes_avoided, 2), round(csm.total_virgin_raw_material_saved_tonnes, 2), round(csm.total_water_cubic_meters_saved, 2), round(((csm.total_secondary_trade_value_inr)::numeric / 10000000.0), 3), round(((csm.total_economic_savings_inr)::numeric / 10000000.0), 3), csm.avg_cluster_circularity_score, dense_rank() OVER (?), rank() OVER (?), (round((((100.00 * csm.total_co2e_tonnes_avoided) / NULLIF(sum(csm.total_co2e_tonnes_avoided) OVER (), 0.00)))::numeric, 2)), (round((((100.00 * csm.total_landfill_tonnes_diverted) / NULLIF(sum(csm.total_landfill_tonnes_diverted) OVER (), 0.00)))::numeric, 2)), (round((sum(csm.total_co2e_tonnes_avoided) OVER (?))::numeric, 2))
+  Buffers: shared hit=5430 read=1200
+  ->  Sort  (cost=7845.20..7845.26 rows=25 width=184) (actual time=23.780..23.790 rows=18 loops=1)
+        Output: csm.industrial_cluster, csm.settled_transactions_count, csm.unique_materials_exchanged, csm.active_seller_facilities_count, csm.active_buyer_facilities_count, csm.total_byproduct_tonnes_exchanged, csm.total_landfill_tonnes_diverted, csm.total_co2e_tonnes_avoided, csm.total_virgin_raw_material_saved_tonnes, csm.total_water_cubic_meters_saved, csm.total_secondary_trade_value_inr, csm.total_economic_savings_inr, csm.avg_cluster_circularity_score
+        Sort Key: csm.total_co2e_tonnes_avoided DESC
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=5430 read=1200
+        ->  Subquery Scan on csm  (cost=7650.10..7842.80 rows=25 width=184) (actual time=23.110..23.720 rows=18 loops=1)
+              Output: csm.industrial_cluster, csm.settled_transactions_count, csm.unique_materials_exchanged, csm.active_seller_facilities_count, csm.active_buyer_facilities_count, csm.total_byproduct_tonnes_exchanged, csm.total_landfill_tonnes_diverted, csm.total_co2e_tonnes_avoided, csm.total_virgin_raw_material_saved_tonnes, csm.total_water_cubic_meters_saved, csm.total_secondary_trade_value_inr, csm.total_economic_savings_inr, csm.avg_cluster_circularity_score
+              Buffers: shared hit=5430 read=1200
+              ->  HashAggregate  (cost=7650.10..7842.55 rows=25 width=184) (actual time=23.105..23.710 rows=18 loops=1)
+                    Output: sf.industrial_cluster, count(DISTINCT et.transaction_id), count(DISTINCT et.material_id), count(DISTINCT sf.facility_id), count(DISTINCT et.buyer_facility_id), sum(et.agreed_quantity), sum(eim.landfill_tonnes_diverted), sum(eim.co2e_tonnes_avoided), sum(eim.virgin_raw_material_saved_tonnes), sum(eim.water_cubic_meters_saved), sum(et.agreed_total_inr), sum(eim.economic_value_saved_inr), round(avg(eim.circularity_index_score), 2)
+                    Group Key: sf.industrial_cluster
+                    Batches: 1  Memory Usage: 48kB
+                    Buffers: shared hit=5430 read=1200
+                    ->  Hash Join  (cost=3920.40..7120.80 rows=48200 width=112) (actual time=6.820..18.450 rows=48200 loops=1)
+                          Output: sf.industrial_cluster, sf.facility_id, et.transaction_id, et.material_id, et.buyer_facility_id, et.agreed_quantity, et.agreed_total_inr, eim.landfill_tonnes_diverted, eim.co2e_tonnes_avoided, eim.virgin_raw_material_saved_tonnes, eim.water_cubic_meters_saved, eim.economic_value_saved_inr, eim.circularity_index_score
+                          Hash Cond: (eim.transaction_id = et.transaction_id)
+                          Buffers: shared hit=5430 read=1200
+                          ->  Seq Scan on public.esg_impact_metrics eim  (cost=0.00..2480.00 rows=68000 width=80) (actual time=0.015..4.120 rows=68000 loops=1)
+                                Output: eim.metric_id, eim.transaction_id, eim.landfill_tonnes_diverted, eim.co2e_tonnes_avoided, eim.virgin_raw_material_saved_tonnes, eim.water_cubic_meters_saved, eim.economic_value_saved_inr, eim.circularity_index_score, eim.calculated_at
+                                Buffers: shared hit=2150 read=480
+                          ->  Hash  (cost=3250.20..3250.20 rows=48200 width=80) (actual time=6.750..6.750 rows=48200 loops=1)
+                                Output: sf.industrial_cluster, sf.facility_id, et.transaction_id, et.material_id, et.buyer_facility_id, et.agreed_quantity, et.agreed_total_inr
+                                Buckets: 65536  Batches: 1  Memory Usage: 4520kB
+                                Buffers: shared hit=3280 read=720
+                                ->  Hash Join  (cost=8.50..3250.20 rows=48200 width=80) (actual time=0.210..5.120 rows=48200 loops=1)
+                                      Output: sf.industrial_cluster, sf.facility_id, et.transaction_id, et.material_id, et.buyer_facility_id, et.agreed_quantity, et.agreed_total_inr
+                                      Hash Cond: (et.seller_facility_id = sf.facility_id)
+                                      Buffers: shared hit=3280 read=720
+                                      ->  Seq Scan on public.exchange_transactions et  (cost=0.00..3120.00 rows=48200 width=64) (actual time=0.020..3.850 rows=48200 loops=1)
+                                            Output: et.transaction_id, et.proposal_id, et.seller_facility_id, et.buyer_facility_id, et.material_id, et.transaction_reference, et.agreed_quantity, et.agreed_unit_price_inr, et.agreed_total_inr, et.transaction_status, et.payment_status, et.contract_signed_at, et.settled_at, et.created_at, et.updated_at
+                                            Filter: ((et.transaction_status)::text = ANY ('{DELIVERED,SETTLED}'::text[]))
+                                            Rows Removed by Filter: 19800
+                                            Buffers: shared hit=2980 read=720
+                                      ->  Hash  (cost=6.50..6.50 rows=250 width=32) (actual time=0.180..0.180 rows=250 loops=1)
+                                            Output: sf.industrial_cluster, sf.facility_id
+                                            Buckets: 1024  Batches: 1  Memory Usage: 22kB
+                                            Buffers: shared hit=300
+                                            ->  Seq Scan on public.facilities sf  (cost=0.00..6.50 rows=250 width=32) (actual time=0.008..0.120 rows=250 loops=1)
+                                                  Output: sf.industrial_cluster, sf.facility_id
+                                                  Buffers: shared hit=300
+
+Settings: work_mem = '64MB', shared_buffers = '512MB', enable_indexscan = 'off', enable_bitmapscan = 'off'
+Planning Time: 1.620 ms
+Execution Time: 24.105 ms
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+OPTIMIZER EXECUTION SUMMARY:
+- Unindexed query performed sequential scans on both public.exchange_transactions (68,000 rows, 19,800 discarded by filter) and public.esg_impact_metrics (68,000 rows).
+- Heavy buffer throughput: 5,430 shared hits and 1,200 disk reads.
+- Cost estimate: 7,845.20 cost units.
+- Total Execution Time: 24.105 ms.
+================================================================================

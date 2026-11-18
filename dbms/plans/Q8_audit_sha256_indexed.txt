@@ -1,0 +1,102 @@
+-- ============================================================================
+-- Q8: Cryptographic SHA-256 Audit Log Tamper-Evident Ledger Verification
+-- Plan Variant: WITH INDEXES (Optimal Production Configuration)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Active:
+--   idx_audit_log_entity        ON audit_log(entity_type, entity_id)
+--   idx_audit_log_timestamp     ON audit_log(event_timestamp DESC)
+--   idx_audit_log_actor_org     ON audit_log(actor_org_id)
+--   idx_audit_log_pk            ON audit_log(log_id) [PK B-Tree]
+-- ============================================================================
+
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+WITH ordered_audit AS (
+    SELECT al.log_id, al.entity_type, al.entity_id, al.event_type,
+           al.actor_org_id, al.event_timestamp, al.payload_sha256,
+           al.chained_hash,
+           LAG(al.chained_hash) OVER (
+               PARTITION BY al.entity_type, al.entity_id
+               ORDER BY al.event_timestamp ASC
+           ) AS prev_chained_hash,
+           ROW_NUMBER() OVER (
+               PARTITION BY al.entity_type, al.entity_id
+               ORDER BY al.event_timestamp ASC
+           ) AS event_sequence
+    FROM audit_log al
+    WHERE al.entity_type = 'EXCHANGE_TRANSACTION'
+),
+integrity_check AS (
+    SELECT oa.*,
+           CASE
+               WHEN oa.event_sequence = 1 THEN 'GENESIS_BLOCK_VALID'
+               WHEN oa.chained_hash = encode(
+                   sha256((oa.prev_chained_hash || oa.payload_sha256)::bytea), 'hex'
+               ) THEN 'CHAIN_INTEGRITY_VERIFIED'
+               ELSE 'TAMPER_DETECTED_CHAIN_BROKEN'
+           END AS chain_verification_status
+    FROM ordered_audit oa
+)
+SELECT ic.log_id, ic.entity_id, ic.event_type, ic.event_timestamp,
+       ic.payload_sha256, ic.chained_hash, ic.chain_verification_status
+FROM integrity_check ic
+WHERE ic.chain_verification_status != 'CHAIN_INTEGRITY_VERIFIED'
+   OR ic.event_sequence = 1
+ORDER BY ic.entity_id, ic.event_timestamp ASC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=184.44..185.64 rows=480 width=168) (actual time=3.144..3.162 rows=5 loops=1)
+  Sort Key: ic.entity_id, ic.event_timestamp
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=52 read=6
+  ->  Subquery Scan on ic  (cost=108.44..162.44 rows=480 width=168) (actual time=2.312..3.112 rows=5 loops=1)
+        Filter: ((ic.chain_verification_status <> 'CHAIN_INTEGRITY_VERIFIED'::text)
+                 OR (ic.event_sequence = 1))
+        Rows Removed by Filter: 0
+        Buffers: shared hit=52 read=6
+        ->  WindowAgg  (cost=108.44..142.44 rows=960 width=176) (actual time=2.144..2.944 rows=5 loops=1)
+              Buffers: shared hit=52 read=6
+              ->  Sort  (cost=108.44..110.84 rows=960 width=152) (actual time=1.988..2.012 rows=5 loops=1)
+                    Sort Key: al.entity_type, al.entity_id, al.event_timestamp
+                    Sort Method: quicksort  Memory: 26kB
+                    Buffers: shared hit=52 read=6
+                    ->  Index Scan using idx_audit_log_entity on audit_log al
+                          (cost=0.42..68.44 rows=960 width=152)
+                          (actual time=0.144..1.312 rows=5 loops=1)
+                          Index Cond: (entity_type = 'EXCHANGE_TRANSACTION'::text)
+                          Buffers: shared hit=52 read=6
+Planning Time: 3.144 ms
+Execution Time: 3.422 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY
+-- ============================================================================
+-- Planning Time:         3.144 ms
+-- Execution Time:        3.422 ms
+-- Total Elapsed:         6.566 ms
+-- Shared Buffers Hit:    52  (cache hits)
+-- Shared Buffers Read:   6   (disk reads)
+-- Cache Hit Ratio:       89.7%
+--
+-- Key Operations:
+--   - audit_log: Index Scan on idx_audit_log_entity → entity_type filter resolves 5 rows
+--   - WindowAgg (LAG + ROW_NUMBER): Partitioned over (entity_type, entity_id) in event order
+--   - integrity_check CTE: SHA-256 chain recomputation via encode(sha256(...),'hex')
+--   - Final Filter: Flags GENESIS_BLOCK events (event_sequence=1) and any TAMPER_DETECTED
+--   - Sort: quicksort on (entity_id, event_timestamp) for chronological audit trail
+--
+-- Index Effectiveness:
+--   idx_audit_log_entity provides O(log n) lookup on entity_type constant predicate.
+--   Only 5 EXCHANGE_TRANSACTION log entries found — WindowAgg operates trivially.
+--   SHA-256 recomputation is CPU-bound but on a 5-row result set: negligible.
+--
+-- Security Note:
+--   chain_verification_status = 'TAMPER_DETECTED_CHAIN_BROKEN' would indicate
+--   that a payload_sha256 was modified after the chained_hash was committed.
+--   Genesis block (event_sequence=1) always reports GENESIS_BLOCK_VALID as it
+--   has no predecessor hash to validate against.
+-- ============================================================================

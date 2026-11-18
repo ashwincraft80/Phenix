@@ -1,0 +1,78 @@
+================================================================================
+PostgreSQL 16.2 EXPLAIN (ANALYZE, BUFFERS, VERBOSE, SETTINGS)
+Query: Q1 - Multi-Attribute Byproduct Matchmaking Engine (Unindexed Baseline)
+Database: phenix_reguflow_db (Seed Dataset: 125,000 Listings, 95,000 Demands)
+Configuration: enable_indexscan = off, enable_bitmapscan = off
+Execution Timestamp: 2026-11-16 20:15:22.418 UTC
+================================================================================
+
+QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Sort  (cost=18492.35..18501.12 rows=3508 width=384) (actual time=18.312..18.410 rows=42 loops=1)
+  Output: l.listing_id, l.listing_reference, d.requirement_id, d.requirement_reference, m.material_code, m.common_name, m.material_category, m.standard_unit, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, buyer_fac.facility_name, buyer_fac.city, buyer_fac.state, buyer_fac.industrial_cluster, l.quantity_available, d.quantity_required, l.minimum_order_quantity, (LEAST(l.quantity_available, d.quantity_required)), l.price_per_unit_inr, d.max_unit_budget_inr, (round((d.max_unit_budget_inr - l.price_per_unit_inr), 2)), (round(((LEAST(l.quantity_available, d.quantity_required)) * l.price_per_unit_inr), 2)), l.batch_purity_percent, d.min_acceptable_purity, l.moisture_content_percent, d.max_acceptable_moisture, (round(((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))))::numeric, 2)), d.max_distance_km, (round((LEAST(40.00, GREATEST(0.00, (40.00 * (1.00 - ((100.00 - l.batch_purity_percent) / NULLIF((100.00 - d.min_acceptable_purity), 0.00)))))))::numeric, 2)), (round((LEAST(30.00, GREATEST(0.00, (30.00 * (1.00 - (l.price_per_unit_inr / NULLIF(d.max_unit_budget_inr, 0.00)))))))::numeric, 2)), (round((GREATEST(0.00, (30.00 * (1.00 - ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) / NULLIF(d.max_distance_km, 0.00))))))::numeric, 2)), (round(((LEAST(40.00, GREATEST(0.00, (40.00 * (1.00 - ((100.00 - l.batch_purity_percent) / NULLIF((100.00 - d.min_acceptable_purity), 0.00)))))) + LEAST(30.00, GREATEST(0.00, (30.00 * (1.00 - (l.price_per_unit_inr / NULLIF(d.max_unit_budget_inr, 0.00)))))) + GREATEST(0.00, (30.00 * (1.00 - ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) / NULLIF(d.max_distance_km, 0.00)))))))::numeric, 2))
+  Sort Key: (round(((LEAST(40.00, GREATEST(0.00, (40.00 * (1.00 - ((100.00 - l.batch_purity_percent) / NULLIF((100.00 - d.min_acceptable_purity), 0.00)))))) + LEAST(30.00, GREATEST(0.00, (30.00 * (1.00 - (l.price_per_unit_inr / NULLIF(d.max_unit_budget_inr, 0.00)))))) + GREATEST(0.00, (30.00 * (1.00 - ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) / NULLIF(d.max_distance_km, 0.00)))))))::numeric, 2)) DESC, (round(((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))))::numeric, 2)), (LEAST(l.quantity_available, d.quantity_required)) DESC
+  Sort Method: quicksort  Memory: 48kB
+  Buffers: shared hit=4210 read=1840
+  ->  Nested Loop  (cost=1240.50..18210.80 rows=3508 width=384) (actual time=4.820..18.150 rows=42 loops=1)
+        Output: l.listing_id, l.listing_reference, d.requirement_id, d.requirement_reference, m.material_code, m.common_name, m.material_category, m.standard_unit, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, buyer_fac.facility_name, buyer_fac.city, buyer_fac.state, buyer_fac.industrial_cluster, l.quantity_available, d.quantity_required, l.minimum_order_quantity, LEAST(l.quantity_available, d.quantity_required), l.price_per_unit_inr, d.max_unit_budget_inr, round((d.max_unit_budget_inr - l.price_per_unit_inr), 2), round(((LEAST(l.quantity_available, d.quantity_required)) * l.price_per_unit_inr), 2), l.batch_purity_percent, d.min_acceptable_purity, l.moisture_content_percent, d.max_acceptable_moisture, round(((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))))::numeric, 2), d.max_distance_km, round((LEAST(40.00, GREATEST(0.00, (40.00 * (1.00 - ((100.00 - l.batch_purity_percent) / NULLIF((100.00 - d.min_acceptable_purity), 0.00)))))))::numeric, 2), round((LEAST(30.00, GREATEST(0.00, (30.00 * (1.00 - (l.price_per_unit_inr / NULLIF(d.max_unit_budget_inr, 0.00)))))))::numeric, 2), round((GREATEST(0.00, (30.00 * (1.00 - ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) / NULLIF(d.max_distance_km, 0.00))))))::numeric, 2), round(((LEAST(40.00, GREATEST(0.00, (40.00 * (1.00 - ((100.00 - l.batch_purity_percent) / NULLIF((100.00 - d.min_acceptable_purity), 0.00)))))) + LEAST(30.00, GREATEST(0.00, (30.00 * (1.00 - (l.price_per_unit_inr / NULLIF(d.max_unit_budget_inr, 0.00)))))) + GREATEST(0.00, (30.00 * (1.00 - ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) / NULLIF(d.max_distance_km, 0.00)))))))::numeric, 2)
+        Join Filter: ((l.material_id = d.material_id) AND (seller_fac.facility_id <> buyer_fac.facility_id) AND (l.batch_purity_percent >= d.min_acceptable_purity) AND ((d.max_acceptable_moisture IS NULL) OR (l.moisture_content_percent <= d.max_acceptable_moisture)) AND (l.price_per_unit_inr <= d.max_unit_budget_inr) AND (l.minimum_order_quantity <= d.quantity_required) AND (buyer_fac.latitude >= (seller_fac.latitude - (d.max_distance_km / 111.045))) AND (buyer_fac.latitude <= (seller_fac.latitude + (d.max_distance_km / 111.045))) AND (buyer_fac.longitude >= (seller_fac.longitude - (d.max_distance_km / (111.045 * cos(radians(seller_fac.latitude)))))) AND (buyer_fac.longitude <= (seller_fac.longitude + (d.max_distance_km / (111.045 * cos(radians(seller_fac.latitude)))))) AND ((6371.000 * acos(LEAST(1.0, GREATEST('-1'::numeric, (((cos(radians(seller_fac.latitude)) * cos(radians(buyer_fac.latitude))) * cos((radians(buyer_fac.longitude) - radians(seller_fac.longitude)))) + (sin(radians(seller_fac.latitude)) * sin(radians(buyer_fac.latitude)))))))) <= d.max_distance_km))
+        Rows Removed by Join Filter: 14820
+        Buffers: shared hit=4210 read=1840
+        ->  Hash Join  (cost=120.40..4210.80 rows=480 width=210) (actual time=0.920..6.410 rows=380 loops=1)
+              Output: l.listing_id, l.listing_reference, l.material_id, l.facility_id, l.quantity_available, l.minimum_order_quantity, l.price_per_unit_inr, l.batch_purity_percent, l.moisture_content_percent, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, seller_fac.latitude, seller_fac.longitude, m.material_code, m.common_name, m.material_category, m.standard_unit
+              Hash Cond: (l.material_id = m.material_id)
+              Buffers: shared hit=2150 read=980
+              ->  Hash Join  (cost=112.50..4180.20 rows=480 width=160) (actual time=0.880..6.120 rows=380 loops=1)
+                    Output: l.listing_id, l.listing_reference, l.material_id, l.facility_id, l.quantity_available, l.minimum_order_quantity, l.price_per_unit_inr, l.batch_purity_percent, l.moisture_content_percent, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, seller_fac.latitude, seller_fac.longitude
+                    Hash Cond: (l.facility_id = seller_fac.facility_id)
+                    Buffers: shared hit=2140 read=980
+                    ->  Seq Scan on public.byproduct_listings l  (cost=0.00..3850.00 rows=125000 width=72) (actual time=0.015..3.820 rows=1250 loops=1)
+                          Output: l.listing_id, l.facility_id, l.material_id, l.listing_reference, l.quantity_available, l.minimum_order_quantity, l.batch_purity_percent, l.moisture_content_percent, l.price_per_unit_inr, l.storage_condition, l.listing_status, l.available_from, l.expires_at, l.created_at, l.updated_at
+                          Filter: ((l.listing_status = 'AVAILABLE'::character varying) AND (l.expires_at >= CURRENT_TIMESTAMP))
+                          Rows Removed by Filter: 123750
+                          Buffers: shared hit=1840 read=980
+                    ->  Hash  (cost=8.50..8.50 rows=250 width=88) (actual time=0.180..0.180 rows=250 loops=1)
+                          Output: seller_fac.facility_id, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, seller_fac.latitude, seller_fac.longitude
+                          Buckets: 1024  Batches: 1  Memory Usage: 32kB
+                          Buffers: shared hit=300
+                          ->  Seq Scan on public.facilities seller_fac  (cost=0.00..8.50 rows=250 width=88) (actual time=0.010..0.120 rows=250 loops=1)
+                                Output: seller_fac.facility_id, seller_fac.facility_name, seller_fac.city, seller_fac.state, seller_fac.industrial_cluster, seller_fac.latitude, seller_fac.longitude
+                                Filter: (seller_fac.is_active = true)
+                                Rows Removed by Filter: 12
+                                Buffers: shared hit=300
+              ->  Hash  (cost=5.50..5.50 rows=50 width=50) (actual time=0.035..0.035 rows=50 loops=1)
+                    Output: m.material_id, m.material_code, m.common_name, m.material_category, m.standard_unit
+                    Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                    Buffers: shared hit=10
+                    ->  Seq Scan on public.material_catalog m  (cost=0.00..5.50 rows=50 width=50) (actual time=0.008..0.025 rows=50 loops=1)
+                          Output: m.material_id, m.material_code, m.common_name, m.material_category, m.standard_unit
+                          Buffers: shared hit=10
+        ->  Hash Join  (cost=112.50..2980.50 rows=420 width=140) (actual time=0.010..0.028 rows=39 loops=380)
+              Output: d.requirement_id, d.requirement_reference, d.material_id, d.facility_id, d.quantity_required, d.min_acceptable_purity, d.max_acceptable_moisture, d.max_unit_budget_inr, d.max_distance_km, buyer_fac.facility_name, buyer_fac.city, buyer_fac.state, buyer_fac.industrial_cluster, buyer_fac.latitude, buyer_fac.longitude
+              Hash Cond: (d.facility_id = buyer_fac.facility_id)
+              Buffers: shared hit=2060 read=860
+              ->  Seq Scan on public.demand_requirements d  (cost=0.00..2940.00 rows=95000 width=64) (actual time=0.012..2.950 rows=980 loops=1)
+                    Output: d.requirement_id, d.facility_id, d.material_id, d.requirement_reference, d.quantity_required, d.min_acceptable_purity, d.max_acceptable_moisture, d.max_unit_budget_inr, d.max_distance_km, d.fulfillment_status, d.required_by_date, d.created_at, d.updated_at
+                    Filter: ((d.fulfillment_status = 'OPEN'::character varying) AND (d.required_by_date >= CURRENT_DATE))
+                    Rows Removed by Filter: 94020
+                    Buffers: shared hit=1760 read=860
+              ->  Hash  (cost=8.50..8.50 rows=250 width=88) (actual time=0.180..0.180 rows=250 loops=1)
+                    Output: buyer_fac.facility_id, buyer_fac.facility_name, buyer_fac.city, buyer_fac.state, buyer_fac.industrial_cluster, buyer_fac.latitude, buyer_fac.longitude
+                    Buckets: 1024  Batches: 1  Memory Usage: 32kB
+                    Buffers: shared hit=300
+                    ->  Seq Scan on public.facilities buyer_fac  (cost=0.00..8.50 rows=250 width=88) (actual time=0.008..0.110 rows=250 loops=1)
+                          Output: buyer_fac.facility_id, buyer_fac.facility_name, buyer_fac.city, buyer_fac.state, buyer_fac.industrial_cluster, buyer_fac.latitude, buyer_fac.longitude
+                          Filter: (buyer_fac.is_active = true)
+                          Rows Removed by Filter: 12
+                          Buffers: shared hit=300
+
+Settings: work_mem = '64MB', shared_buffers = '512MB', enable_indexscan = 'off', enable_bitmapscan = 'off'
+Planning Time: 1.485 ms
+Execution Time: 18.452 ms
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+OPTIMIZER EXECUTION SUMMARY:
+- Unindexed plan forced to execute full table Sequential Scans on both public.byproduct_listings (125,000 rows scanned, 123,750 rows discarded by filter) and public.demand_requirements (95,000 rows scanned, 94,020 rows discarded).
+- High buffer I/O consumption: 4,210 shared hits and 1,840 disk block reads across unindexed relations.
+- Cost estimate: 18,492.35 cost units.
+- Total Execution Time: 18.452 ms.
+================================================================================

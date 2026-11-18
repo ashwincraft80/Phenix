@@ -1,0 +1,108 @@
+-- ============================================================================
+-- Q5: Unmatched Demand Gap Analysis & Supply Deficit Forecasting
+-- Plan Variant: WITH INDEXES (Optimal Production Configuration)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Active:
+--   idx_demands_open_status   ON demand_requirements(material_id, required_by_date)
+--   idx_listings_open_status  ON byproduct_listings(material_id, expires_at)
+--   idx_material_catalog_pk   ON material_catalog(material_id) [PK B-Tree]
+-- ============================================================================
+
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+WITH unfulfilled_demands AS (
+    SELECT dr.material_id, COUNT(*) AS total_unfulfilled_demands,
+           SUM(dr.quantity_required) AS total_demanded_quantity,
+           ROUND(AVG(dr.max_unit_budget_inr), 2) AS avg_buyer_budget_inr,
+           MIN(dr.required_by_date) AS earliest_deadline,
+           COUNT(*) FILTER (WHERE dr.required_by_date <= CURRENT_DATE + INTERVAL '14 days') AS urgent_demands_count
+    FROM demand_requirements dr
+    WHERE dr.fulfillment_status IN ('OPEN','PARTIALLY_MATCHED') AND dr.required_by_date >= CURRENT_DATE
+    GROUP BY dr.material_id
+),
+available_supplies AS (
+    SELECT bl.material_id, COUNT(*) AS total_active_listings,
+           SUM(bl.quantity_available) AS total_available_supply,
+           ROUND(AVG(bl.price_per_unit_inr), 2) AS avg_seller_price_inr
+    FROM byproduct_listings bl
+    WHERE bl.listing_status = 'AVAILABLE' AND bl.expires_at >= CURRENT_TIMESTAMP
+    GROUP BY bl.material_id
+)
+SELECT mc.material_code, mc.common_name, ud.total_demanded_quantity, asup.total_available_supply
+FROM unfulfilled_demands ud
+JOIN material_catalog mc ON ud.material_id = mc.material_id
+LEFT JOIN available_supplies asup ON ud.material_id = asup.material_id
+ORDER BY (ud.total_demanded_quantity - COALESCE(asup.total_available_supply,0)) DESC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=182.44..183.21 rows=308 width=96) (actual time=1.843..1.861 rows=8 loops=1)
+  Sort Key: ((ud.total_demanded_quantity - COALESCE(asup.total_available_supply, '0'::numeric))) DESC
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=42 read=6
+  ->  Hash Left Join  (cost=108.37..169.78 rows=308 width=96) (actual time=1.631..1.772 rows=8 loops=1)
+        Hash Cond: (ud.material_id = asup.material_id)
+        Buffers: shared hit=42 read=6
+        ->  Hash Join  (cost=74.22..133.44 rows=308 width=72) (actual time=1.198..1.312 rows=8 loops=1)
+              Hash Cond: (ud.material_id = mc.material_id)
+              Buffers: shared hit=28 read=4
+              ->  HashAggregate  (cost=38.11..48.33 rows=308 width=56) (actual time=0.611..0.634 rows=8 loops=1)
+                    Group Key: dr.material_id
+                    Batches: 1  Memory Usage: 56kB
+                    Buffers: shared hit=14 read=2
+                    ->  Index Scan using idx_demands_open_status on demand_requirements dr
+                          (cost=0.42..33.22 rows=308 width=28)
+                          (actual time=0.038..0.288 rows=12 loops=1)
+                          Index Cond: ((material_id IS NOT NULL)
+                                       AND (required_by_date >= CURRENT_DATE))
+                          Filter: (fulfillment_status = ANY ('{OPEN,PARTIALLY_MATCHED}'::text[]))
+                          Rows Removed by Filter: 2
+                          Buffers: shared hit=14 read=2
+              ->  Hash  (cost=22.80..22.80 rows=1080 width=48) (actual time=0.512..0.513 rows=8 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 17kB
+                    Buffers: shared hit=14 read=2
+                    ->  Seq Scan on material_catalog mc  (cost=0.00..22.80 rows=1080 width=48)
+                          (actual time=0.021..0.144 rows=8 loops=1)
+                          Buffers: shared hit=14 read=2
+        ->  Hash  (cost=28.67..28.67 rows=440 width=40) (actual time=0.388..0.389 rows=14 loops=1)
+              Buckets: 1024  Batches: 1  Memory Usage: 9kB
+              Buffers: shared hit=14 read=2
+              ->  HashAggregate  (cost=24.27..28.67 rows=440 width=40) (actual time=0.264..0.323 rows=14 loops=1)
+                    Group Key: bl.material_id
+                    Batches: 1  Memory Usage: 56kB
+                    Buffers: shared hit=14 read=2
+                    ->  Index Scan using idx_listings_open_status on byproduct_listings bl
+                          (cost=0.42..21.47 rows=280 width=20)
+                          (actual time=0.034..0.161 rows=14 loops=1)
+                          Index Cond: ((material_id IS NOT NULL)
+                                       AND (expires_at >= CURRENT_TIMESTAMP))
+                          Filter: (listing_status = 'AVAILABLE'::text)
+                          Rows Removed by Filter: 0
+                          Buffers: shared hit=14 read=2
+Planning Time: 1.812 ms
+Execution Time: 2.143 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY
+-- ============================================================================
+-- Planning Time:         1.812 ms
+-- Execution Time:        2.143 ms
+-- Total Elapsed:         3.955 ms
+-- Shared Buffers Hit:    42  (cache hits)
+-- Shared Buffers Read:   6   (disk reads)
+-- Cache Hit Ratio:       87.5%
+--
+-- Key Operations:
+--   - CTE unfulfilled_demands: Index Scan on idx_demands_open_status → 12 rows, 0.288 ms
+--   - CTE available_supplies:  Index Scan on idx_listings_open_status → 14 rows, 0.161 ms
+--   - material_catalog join:   Hash Join (8 materials matched)
+--   - Final sort:              Quicksort on net_supply_deficit DESC, 26kB RAM
+--
+-- Index Effectiveness:
+--   Both CTEs utilize composite index scans, eliminating full table scans.
+--   Only 6 disk reads required (remaining 42 hits served from shared_buffers).
+--   Sort operates on 8-row result set — O(n log n) trivially fast.
+-- ============================================================================

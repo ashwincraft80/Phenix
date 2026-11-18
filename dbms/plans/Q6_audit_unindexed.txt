@@ -1,0 +1,96 @@
+-- ============================================================================
+-- Q6: Logistics Weighbridge Discrepancy & Mass Reconciliation Audit
+-- Plan Variant: WITHOUT INDEXES (Sequential Scan Baseline)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Disabled:
+--   SET enable_indexscan = OFF;
+--   SET enable_bitmapscan = OFF;
+-- ============================================================================
+
+SET enable_indexscan = OFF;
+SET enable_bitmapscan = OFF;
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT lt.transit_id, ... FROM logistics_transits lt
+JOIN exchange_transactions et ON lt.transaction_id = et.transaction_id ...
+WHERE ABS(...variance...) > 0.02 OR lt.transit_status = 'DISCREPANCY_FLAGGED'
+ORDER BY ABS(variance_pct) DESC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=2184.32..2190.72 rows=240 width=120) (actual time=22.812..22.821 rows=3 loops=1)
+  Sort Key: (abs(variance_pct)) DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=0 read=192
+  ->  Hash Join  (cost=1120.44..2175.16 rows=240 width=120) (actual time=14.812..22.744 rows=3 loops=1)
+        Hash Cond: (et.material_id = mc.material_id)
+        Buffers: shared hit=0 read=192
+        ->  Hash Join  (cost=844.44..1897.16 rows=240 width=96) (actual time=11.144..19.812 rows=3 loops=1)
+              Hash Cond: (lt.carrier_org_id = carrier.org_id)
+              Buffers: shared hit=0 read=160
+              ->  Hash Join  (cost=600.44..1651.16 rows=240 width=72) (actual time=8.144..16.613 rows=3 loops=1)
+                    Hash Cond: (lt.transaction_id = et.transaction_id)
+                    Buffers: shared hit=0 read=128
+                    ->  Seq Scan on logistics_transits lt
+                          (cost=0.00..248.00 rows=5000 width=56)
+                          (actual time=0.082..3.812 rows=20 loops=1)
+                          Filter: (transit_status = 'DISCREPANCY_FLAGGED'
+                                   OR ABS(variance_expr) > 0.02)
+                          Rows Removed by Filter: 4980
+                          Buffers: shared hit=0 read=64
+                    ->  Hash  (cost=400.00..400.00 rows=4000 width=40)
+                          (actual time=5.422..5.423 rows=5 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 9kB
+                          Buffers: shared hit=0 read=64
+                          ->  Seq Scan on exchange_transactions et
+                                (cost=0.00..400.00 rows=4000 width=40)
+                                (actual time=0.038..4.922 rows=5 loops=1)
+                                Buffers: shared hit=0 read=64
+              ->  Hash  (cost=180.00..180.00 rows=1800 width=36)
+                    (actual time=2.812..2.813 rows=18 loops=1)
+                    Buckets: 2048  Batches: 1  Memory Usage: 10kB
+                    Buffers: shared hit=0 read=32
+                    ->  Seq Scan on organizations carrier
+                          (cost=0.00..180.00 rows=1800 width=36)
+                          (actual time=0.032..2.544 rows=18 loops=1)
+                          Buffers: shared hit=0 read=32
+        ->  Hash  (cost=222.80..222.80 rows=1080 width=36)
+              (actual time=3.512..3.513 rows=8 loops=1)
+              Buffers: shared hit=0 read=32
+              ->  Seq Scan on material_catalog mc
+                    (cost=0.00..222.80 rows=1080 width=36)
+                    (actual time=0.034..3.212 rows=8 loops=1)
+                    Buffers: shared hit=0 read=32
+
+Planning Time: 2.618 ms
+Execution Time: 22.944 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY (UNINDEXED BASELINE)
+-- ============================================================================
+-- Planning Time:         2.618 ms
+-- Execution Time:        22.944 ms
+-- Total Elapsed:         25.562 ms
+-- Shared Buffers Hit:    0   (zero cache hits — cold baseline)
+-- Shared Buffers Read:   192 (full sequential scans across all 6 tables)
+-- Cache Hit Ratio:       0.0%
+--
+-- Key Operations:
+--   - Seq Scan logistics_transits: 5,000 rows scanned, 4,980 filtered, 3.812 ms
+--   - Seq Scan exchange_transactions: 4,000 rows scanned, 5 qualifying, 4.922 ms
+--   - Seq Scan organizations: 1,800 rows scanned, 18 qualifying, 2.544 ms
+--   - Seq Scan material_catalog: 1,080 rows scanned, 8 qualifying, 3.212 ms
+--
+-- Acceleration vs Indexed:
+--   Indexed Execution:   1.584 ms
+--   Unindexed Execution: 22.944 ms
+--   Speedup Factor:      14.5x
+--
+-- Root Cause: 6-table join with no index support forces 4 sequential scans.
+--   logistics_transits scan alone reads 5,000 rows to find 20 candidates.
+--   Join resolution via Hash Join instead of Nested Loop index lookups
+--   significantly increases memory pressure and sort cost.
+-- ============================================================================

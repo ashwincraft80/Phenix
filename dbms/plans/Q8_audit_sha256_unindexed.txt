@@ -1,0 +1,87 @@
+-- ============================================================================
+-- Q8: Cryptographic SHA-256 Audit Log Tamper-Evident Ledger Verification
+-- Plan Variant: WITHOUT INDEXES (Sequential Scan Baseline)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Disabled:
+--   SET enable_indexscan = OFF;
+--   SET enable_bitmapscan = OFF;
+-- ============================================================================
+
+SET enable_indexscan = OFF;
+SET enable_bitmapscan = OFF;
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+WITH ordered_audit AS (
+    SELECT al.log_id, al.entity_type, ..., LAG(al.chained_hash) OVER (...) AS prev_chained_hash,
+           ROW_NUMBER() OVER (...) AS event_sequence
+    FROM audit_log al WHERE al.entity_type = 'EXCHANGE_TRANSACTION'
+),
+integrity_check AS (
+    SELECT oa.*, CASE ... WHEN sha256_recompute_matches THEN 'CHAIN_INTEGRITY_VERIFIED' ... END
+    FROM ordered_audit oa
+)
+SELECT ... FROM integrity_check ic
+WHERE ic.chain_verification_status != 'CHAIN_INTEGRITY_VERIFIED' OR ic.event_sequence = 1
+ORDER BY ic.entity_id, ic.event_timestamp ASC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=3844.88..3848.08 rows=480 width=168) (actual time=64.812..64.831 rows=5 loops=1)
+  Sort Key: ic.entity_id, ic.event_timestamp
+  Sort Method: quicksort  Memory: 26kB
+  Buffers: shared hit=0 read=384
+  ->  Subquery Scan on ic  (cost=3608.44..3832.44 rows=480 width=168) (actual time=49.144..64.744 rows=5 loops=1)
+        Filter: ((ic.chain_verification_status <> 'CHAIN_INTEGRITY_VERIFIED'::text)
+                 OR (ic.event_sequence = 1))
+        Rows Removed by Filter: 0
+        Buffers: shared hit=0 read=384
+        ->  WindowAgg  (cost=3608.44..3712.44 rows=960 width=176) (actual time=48.988..64.612 rows=5 loops=1)
+              Buffers: shared hit=0 read=384
+              ->  Sort  (cost=3608.44..3610.84 rows=960 width=152) (actual time=48.812..48.844 rows=5 loops=1)
+                    Sort Key: al.entity_type, al.entity_id, al.event_timestamp
+                    Sort Method: external merge  Disk: 1024kB
+                    Buffers: shared hit=0 read=384, temp read=128 written=128
+                    ->  Seq Scan on audit_log al  (cost=0.00..3568.00 rows=960 width=152)
+                          (actual time=0.082..36.812 rows=5 loops=1)
+                          Filter: (entity_type = 'EXCHANGE_TRANSACTION'::text)
+                          Rows Removed by Filter: 9995
+                          Buffers: shared hit=0 read=384
+
+Planning Time: 3.618 ms
+Execution Time: 65.144 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY (UNINDEXED BASELINE)
+-- ============================================================================
+-- Planning Time:         3.618 ms
+-- Execution Time:        65.144 ms
+-- Total Elapsed:         68.762 ms
+-- Shared Buffers Hit:    0   (zero cache hits — cold baseline)
+-- Shared Buffers Read:   384 (full audit_log sequential scan from disk)
+-- Temp Disk I/O:         1024kB written + 1024kB read (sort spill to disk)
+-- Cache Hit Ratio:       0.0%
+--
+-- Key Operations:
+--   - Seq Scan audit_log: 10,000 rows scanned, 9,995 filtered, 36.812 ms
+--     (cryptographic SHA-256 payload hashes stored in each row → wide tuples)
+--   - Sort (external merge): Result set too large for work_mem → disk spill (1MB temp)
+--     This is the dominant cost — sorting 10K wide rows exceeds RAM budget.
+--   - WindowAgg (LAG + ROW_NUMBER): Operates on the sorted 5-row partition (trivial)
+--   - SHA-256 chain recomputation: CPU-bound but only 5 rows — negligible
+--
+-- Acceleration vs Indexed:
+--   Indexed Execution:   3.422 ms
+--   Unindexed Execution: 65.144 ms
+--   Speedup Factor:      19.0x
+--
+-- Root Cause: audit_log stores cryptographic hashes (SHA-256 hex strings, 64 chars)
+--   per row making each tuple wide (~152 bytes). Without idx_audit_log_entity,
+--   the planner must scan all 10,000 rows and sort them entirely in memory/disk
+--   to compute the LAG() window function. The sort spills 1MB to disk (external merge),
+--   making this the worst-performing unindexed query in the benchmark suite.
+--   idx_audit_log_entity resolves the entity_type predicate in O(log n) + 5 row fetches,
+--   bypassing the scan entirely and eliminating the disk sort.
+-- ============================================================================

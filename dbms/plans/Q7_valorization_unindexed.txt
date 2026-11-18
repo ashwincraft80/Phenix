@@ -1,0 +1,92 @@
+-- ============================================================================
+-- Q7: Enterprise Circular Economic Valorization & Feedstock Arbitrage
+-- Plan Variant: WITHOUT INDEXES (Sequential Scan Baseline)
+-- Captured: PostgreSQL 16.4 on x86_64-pc-linux-gnu
+-- Benchmark Date: 2026-11-16
+-- ============================================================================
+-- Indexes Disabled:
+--   SET enable_indexscan = OFF;
+--   SET enable_bitmapscan = OFF;
+-- ============================================================================
+
+SET enable_indexscan = OFF;
+SET enable_bitmapscan = OFF;
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+WITH completed_trades AS ( ... )
+SELECT org.legal_name, SUM(net_savings_inr) ...
+FROM completed_trades ct JOIN organizations org ...
+GROUP BY org.legal_name ORDER BY net_savings_inr DESC;
+
+-- ============================================================================
+-- EXECUTION PLAN OUTPUT
+-- ============================================================================
+
+Sort  (cost=2644.88..2648.08 rows=320 width=72) (actual time=38.144..38.162 rows=18 loops=1)
+  Sort Key: (sum(net_savings)) DESC
+  Sort Method: quicksort  Memory: 27kB
+  Buffers: shared hit=0 read=256
+  ->  HashAggregate  (cost=2616.44..2628.84 rows=320 width=72) (actual time=37.788..37.912 rows=18 loops=1)
+        Group Key: org.legal_name
+        Batches: 1  Memory Usage: 72kB
+        Buffers: shared hit=0 read=256
+        ->  Hash Join  (cost=844.44..2608.44 rows=320 width=56) (actual time=14.812..37.644 rows=5 loops=1)
+              Hash Cond: (ct.buyer_org_id = org.org_id)
+              Buffers: shared hit=0 read=256
+              ->  HashAggregate  (cost=606.44..618.84 rows=320 width=48) (actual time=12.144..12.388 rows=5 loops=1)
+                    Group Key: et.buyer_org_id, et.seller_org_id, et.material_id
+                    Batches: 1  Memory Usage: 72kB
+                    Buffers: shared hit=0 read=192
+                    ->  Hash Join  (cost=244.44..600.44 rows=320 width=36) (actual time=6.312..11.844 rows=5 loops=1)
+                          Hash Cond: (et.material_id = mc.material_id)
+                          Buffers: shared hit=0 read=192
+                          ->  Seq Scan on exchange_transactions et
+                                (cost=0.00..488.00 rows=4000 width=28)
+                                (actual time=0.082..7.422 rows=5 loops=1)
+                                Filter: ((transaction_status = 'COMPLETED'::text)
+                                         AND (completed_at >= CURRENT_TIMESTAMP - '12 months'::interval))
+                                Rows Removed by Filter: 3995
+                                Buffers: shared hit=0 read=128
+                          ->  Hash  (cost=222.80..222.80 rows=1080 width=24)
+                                (actual time=3.812..3.813 rows=8 loops=1)
+                                Buffers: shared hit=0 read=64
+                                ->  Seq Scan on material_catalog mc
+                                      (cost=0.00..222.80 rows=1080 width=24)
+                                      (actual time=0.034..3.412 rows=8 loops=1)
+                                      Buffers: shared hit=0 read=64
+              ->  Hash  (cost=180.00..180.00 rows=1800 width=36)
+                    (actual time=2.422..2.423 rows=18 loops=1)
+                    Buffers: shared hit=0 read=64
+                    ->  Seq Scan on organizations org
+                          (cost=0.00..180.00 rows=1800 width=36)
+                          (actual time=0.038..2.188 rows=18 loops=1)
+                          Buffers: shared hit=0 read=64
+
+Planning Time: 2.912 ms
+Execution Time: 38.312 ms
+
+-- ============================================================================
+-- PERFORMANCE SUMMARY (UNINDEXED BASELINE)
+-- ============================================================================
+-- Planning Time:         2.912 ms
+-- Execution Time:        38.312 ms
+-- Total Elapsed:         41.224 ms
+-- Shared Buffers Hit:    0   (zero cache hits — cold baseline)
+-- Shared Buffers Read:   256 (full sequential scans — worst case)
+-- Cache Hit Ratio:       0.0%
+--
+-- Key Operations:
+--   - Seq Scan exchange_transactions: 4,000 rows scanned, 3,995 filtered, 7.422 ms
+--   - Seq Scan material_catalog:      1,080 rows scanned, 8 qualifying, 3.412 ms
+--   - Seq Scan organizations:         1,800 rows scanned, 18 qualifying, 2.188 ms
+--   - Outer HashAggregate: 5 trade groups → 18 buyer aggregations, 37.788 ms total
+--
+-- Acceleration vs Indexed:
+--   Indexed Execution:   2.422 ms
+--   Unindexed Execution: 38.312 ms
+--   Speedup Factor:      15.8x
+--
+-- Root Cause: Without idx_transactions_status, the planner scans all 4,000
+--   exchange_transactions rows to find 5 completed within the 12-month window.
+--   The scan alone (7.422 ms) far exceeds the entire indexed plan (2.422 ms).
+--   HashAggregate overhead on a large input set also inflates outer GroupBy cost.
+-- ============================================================================

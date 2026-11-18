@@ -1,0 +1,548 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1480" width="100%" height="100%" style="background-color: #090d16; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <linearGradient id="canvasGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0f1d" />
+      <stop offset="100%" stop-color="#060911" />
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#38bdf8" />
+    </marker>
+    <marker id="arrowhead-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arrowhead-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#34d399" />
+    </marker>
+    <marker id="arrowhead-pink" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#f472b6" />
+    </marker>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1920" height="1480" fill="url(#canvasGrad)" />
+
+  <!-- Grid lines background decorative -->
+  <g opacity="0.04" stroke="#ffffff" stroke-width="1">
+    <line x1="0" y1="0" x2="1920" y2="0" /><line x1="0" y1="40" x2="1920" y2="40" /><line x1="0" y1="80" x2="1920" y2="80" /><line x1="0" y1="120" x2="1920" y2="120" /><line x1="0" y1="160" x2="1920" y2="160" /><line x1="0" y1="200" x2="1920" y2="200" /><line x1="0" y1="240" x2="1920" y2="240" /><line x1="0" y1="280" x2="1920" y2="280" /><line x1="0" y1="320" x2="1920" y2="320" /><line x1="0" y1="360" x2="1920" y2="360" /><line x1="0" y1="400" x2="1920" y2="400" /><line x1="0" y1="440" x2="1920" y2="440" /><line x1="0" y1="480" x2="1920" y2="480" /><line x1="0" y1="520" x2="1920" y2="520" /><line x1="0" y1="560" x2="1920" y2="560" /><line x1="0" y1="600" x2="1920" y2="600" /><line x1="0" y1="640" x2="1920" y2="640" /><line x1="0" y1="680" x2="1920" y2="680" /><line x1="0" y1="720" x2="1920" y2="720" /><line x1="0" y1="760" x2="1920" y2="760" /><line x1="0" y1="800" x2="1920" y2="800" /><line x1="0" y1="840" x2="1920" y2="840" /><line x1="0" y1="880" x2="1920" y2="880" /><line x1="0" y1="920" x2="1920" y2="920" /><line x1="0" y1="960" x2="1920" y2="960" /><line x1="0" y1="1000" x2="1920" y2="1000" /><line x1="0" y1="1040" x2="1920" y2="1040" /><line x1="0" y1="1080" x2="1920" y2="1080" /><line x1="0" y1="1120" x2="1920" y2="1120" /><line x1="0" y1="1160" x2="1920" y2="1160" /><line x1="0" y1="1200" x2="1920" y2="1200" /><line x1="0" y1="1240" x2="1920" y2="1240" /><line x1="0" y1="1280" x2="1920" y2="1280" /><line x1="0" y1="1320" x2="1920" y2="1320" /><line x1="0" y1="1360" x2="1920" y2="1360" /><line x1="0" y1="1400" x2="1920" y2="1400" /><line x1="0" y1="1440" x2="1920" y2="1440" /><line x1="0" y1="1480" x2="1920" y2="1480" />
+    <line x1="0" y1="0" x2="0" y2="1480" /><line x1="40" y1="0" x2="40" y2="1480" /><line x1="80" y1="0" x2="80" y2="1480" /><line x1="120" y1="0" x2="120" y2="1480" /><line x1="160" y1="0" x2="160" y2="1480" /><line x1="200" y1="0" x2="200" y2="1480" /><line x1="240" y1="0" x2="240" y2="1480" /><line x1="280" y1="0" x2="280" y2="1480" /><line x1="320" y1="0" x2="320" y2="1480" /><line x1="360" y1="0" x2="360" y2="1480" /><line x1="400" y1="0" x2="400" y2="1480" /><line x1="440" y1="0" x2="440" y2="1480" /><line x1="480" y1="0" x2="480" y2="1480" /><line x1="520" y1="0" x2="520" y2="1480" /><line x1="560" y1="0" x2="560" y2="1480" /><line x1="600" y1="0" x2="600" y2="1480" /><line x1="640" y1="0" x2="640" y2="1480" /><line x1="680" y1="0" x2="680" y2="1480" /><line x1="720" y1="0" x2="720" y2="1480" /><line x1="760" y1="0" x2="760" y2="1480" /><line x1="800" y1="0" x2="800" y2="1480" /><line x1="840" y1="0" x2="840" y2="1480" /><line x1="880" y1="0" x2="880" y2="1480" /><line x1="920" y1="0" x2="920" y2="1480" /><line x1="960" y1="0" x2="960" y2="1480" /><line x1="1000" y1="0" x2="1000" y2="1480" /><line x1="1040" y1="0" x2="1040" y2="1480" /><line x1="1080" y1="0" x2="1080" y2="1480" /><line x1="1120" y1="0" x2="1120" y2="1480" /><line x1="1160" y1="0" x2="1160" y2="1480" /><line x1="1200" y1="0" x2="1200" y2="1480" /><line x1="1240" y1="0" x2="1240" y2="1480" /><line x1="1280" y1="0" x2="1280" y2="1480" /><line x1="1320" y1="0" x2="1320" y2="1480" /><line x1="1360" y1="0" x2="1360" y2="1480" /><line x1="1400" y1="0" x2="1400" y2="1480" /><line x1="1440" y1="0" x2="1440" y2="1480" /><line x1="1480" y1="0" x2="1480" y2="1480" /><line x1="1520" y1="0" x2="1520" y2="1480" /><line x1="1560" y1="0" x2="1560" y2="1480" /><line x1="1600" y1="0" x2="1600" y2="1480" /><line x1="1640" y1="0" x2="1640" y2="1480" /><line x1="1680" y1="0" x2="1680" y2="1480" /><line x1="1720" y1="0" x2="1720" y2="1480" /><line x1="1760" y1="0" x2="1760" y2="1480" /><line x1="1800" y1="0" x2="1800" y2="1480" /><line x1="1840" y1="0" x2="1840" y2="1480" /><line x1="1880" y1="0" x2="1880" y2="1480" />
+  </g>
+
+  <!-- Title & Subtitle Banner -->
+  <g transform="translate(50, 45)">
+    <text x="0" y="0" fill="#f8fafc" font-size="24" font-weight="800" letter-spacing="0.5">Project ReguFlow / Phenix — Relational Database Schema (BCNF)</text>
+    <text x="0" y="24" fill="#94a3b8" font-size="13" font-weight="500">Viksit Bharat 2026 Circular Economy Showcase: Industrial Byproduct Matching, Resource Exchange, and Impact Analytics</text>
+  </g>
+
+  <!-- Legend Box -->
+  <g transform="translate(1420, 25)">
+    <rect width="450" height="52" rx="8" fill="#0f172a" stroke="#1e293b" stroke-width="1.5" />
+    <!-- PK -->
+    <rect x="18" y="16" width="26" height="18" rx="4" fill="#1e3a8a" />
+    <text x="23" y="29" fill="#93c5fd" font-size="10" font-weight="700">PK</text>
+    <text x="50" y="30" fill="#cbd5e1" font-size="12">Primary Key</text>
+    <!-- FK -->
+    <rect x="135" y="16" width="26" height="18" rx="4" fill="#78350f" />
+    <text x="140" y="29" fill="#fde047" font-size="10" font-weight="700">FK</text>
+    <text x="168" y="30" fill="#cbd5e1" font-size="12">Foreign Key</text>
+    <!-- UK -->
+    <rect x="250" y="16" width="26" height="18" rx="4" fill="#064e3b" />
+    <text x="255" y="29" fill="#6ee7b7" font-size="10" font-weight="700">UK</text>
+    <text x="282" y="30" fill="#cbd5e1" font-size="12">Unique Key</text>
+    <!-- Gen -->
+    <rect x="365" y="16" width="30" height="18" rx="4" fill="#312e81" />
+    <text x="369" y="29" fill="#c7d2fe" font-size="9" font-weight="700">GEN</text>
+    <text x="402" y="30" fill="#cbd5e1" font-size="12">Stored</text>
+  </g>
+
+  <!-- Relationship Connector Paths -->
+  <path d="M 380 220 L 440 220" stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.85" />
+  <text x="385" y="212" fill="#38bdf8" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (owns)</text>
+  <path d="M 610 500 L 610 560" stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.85" />
+  <text x="616" y="532" fill="#38bdf8" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (supplies)</text>
+  <path d="M 780 180 L 1240 180" stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.85" />
+  <text x="970" y="172" fill="#38bdf8" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (demands)</text>
+  <path d="M 950 450 L 950 510 L 780 510 L 780 580" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arrowhead-emerald)" opacity="0.85" />
+  <text x="820" y="502" fill="#34d399" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (classifies)</text>
+  <path d="M 1180 260 L 1240 260" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arrowhead-emerald)" opacity="0.85" />
+  <text x="1185" y="252" fill="#34d399" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (specifies)</text>
+  <path d="M 780 680 L 840 680" stroke="#fbbf24" stroke-width="2" fill="none" marker-end="url(#arrowhead-amber)" opacity="0.85" />
+  <text x="785" y="672" fill="#fbbf24" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (supply fit)</text>
+  <path d="M 1240 380 L 1140 380 L 1140 560" stroke="#fbbf24" stroke-width="2" fill="none" marker-end="url(#arrowhead-amber)" opacity="0.85" />
+  <text x="1146" y="470" fill="#fbbf24" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (demand fit)</text>
+  <path d="M 1180 680 L 1240 680" stroke="#f472b6" stroke-width="2" fill="none" marker-end="url(#arrowhead-pink)" opacity="0.85" />
+  <text x="1185" y="672" fill="#f472b6" font-size="11" font-weight="600" letter-spacing="0.2">1 : 1 (executes)</text>
+  <path d="M 1240 920 L 780 920 L 780 1020" stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#arrowhead)" opacity="0.85" />
+  <text x="970" y="912" fill="#38bdf8" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (transports)</text>
+  <path d="M 1240 850 L 1020 850 L 1020 1020" stroke="#34d399" stroke-width="2" fill="none" marker-end="url(#arrowhead-emerald)" opacity="0.85" />
+  <text x="1026" y="950" fill="#34d399" font-size="11" font-weight="600" letter-spacing="0.2">1 to 0..1 (quantifies impact)</text>
+  <path d="M 215 420 L 215 1100 L 440 1100" stroke="#fbbf24" stroke-width="2" fill="none" marker-end="url(#arrowhead-amber)" opacity="0.85" />
+  <text x="225" y="850" fill="#fbbf24" font-size="11" font-weight="600" letter-spacing="0.2">1 : N (carrier haulage)</text>
+  <path d="M 215 420 L 215 1420 L 1415 1420 L 1415 1350" stroke="#f472b6" stroke-width="2" fill="none" marker-end="url(#arrowhead-pink)" opacity="0.85" />
+  <text x="780" y="1412" fill="#f472b6" font-size="11" font-weight="600" letter-spacing="0.2">0..1 to 1..N (audit actor)</text>
+
+  <!-- Table ORGANIZATIONS -->
+  <g transform="translate(50, 110)" filter="url(#cardShadow)">
+    <rect width="330" height="276" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 320 0 Q 330 0 330 10 L 330 44 L 0 44 Z" fill="#1e1b4b" />
+    <line x1="0" y1="44" x2="330" y2="44" stroke="#4f46e5" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">ORGANIZATIONS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Core Master Entity</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">org_id</text>
+    <text x="316" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="326" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="77" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="78" fill="#e2e8f0" font-size="11" font-weight="600">org_code</text>
+    <text x="316" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="100" fill="#e2e8f0" font-size="11" font-weight="400">legal_name</text>
+    <text x="316" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(255)</text>
+    <rect x="2" y="108" width="326" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">trade_name</text>
+    <text x="316" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(255)</text>
+    <rect x="12" y="132" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="143" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="600">tax_identifier</text>
+    <text x="316" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(64)</text>
+    <rect x="2" y="152" width="326" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">industry_sector</text>
+    <text x="316" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">organization_type</text>
+    <text x="316" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <rect x="2" y="196" width="326" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">esg_rating_score</text>
+    <text x="316" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="316" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <rect x="2" y="240" width="326" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="316" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table FACILITIES -->
+  <g transform="translate(440, 110)" filter="url(#cardShadow)">
+    <rect width="340" height="342" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#172554" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#2563eb" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">FACILITIES</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Geospatial Industrial Plants</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">facility_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="77" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">org_id</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="99" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="100" fill="#e2e8f0" font-size="11" font-weight="600">facility_code</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">facility_name</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(255)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">facility_type</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">industrial_cluster</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(100)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">city</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(100)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">state</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(100)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">postal_code</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(20)</text>
+    <rect x="2" y="240" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">latitude</text>
+    <text x="326" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(10,7)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">longitude</text>
+    <text x="326" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(10,7)</text>
+    <rect x="2" y="284" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="326" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="326" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table MATERIAL_CATALOG -->
+  <g transform="translate(840, 110)" filter="url(#cardShadow)">
+    <rect width="340" height="298" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#064e3b" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#059669" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">MATERIAL_CATALOG</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Circular Secondary Taxonomy</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">material_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="77" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="78" fill="#e2e8f0" font-size="11" font-weight="600">material_code</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="100" fill="#e2e8f0" font-size="11" font-weight="400">common_name</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(150)</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">cas_registry_number</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">material_category</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">physical_state</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(20)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">hazard_classification</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">standard_unit</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(20)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">co2e_factor_kg_per_unit</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(10,4)</text>
+    <rect x="2" y="240" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">circular_potential_score</text>
+    <text x="326" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="326" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table DEMAND_REQUIREMENTS -->
+  <g transform="translate(1240, 110)" filter="url(#cardShadow)">
+    <rect width="350" height="342" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 340 0 Q 350 0 350 10 L 350 44 L 0 44 Z" fill="#0c4a6e" />
+    <line x1="0" y1="44" x2="350" y2="44" stroke="#0284c7" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">DEMAND_REQUIREMENTS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Procurement Marketplace Demand</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">requirement_id</text>
+    <text x="336" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="77" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">facility_id</text>
+    <text x="336" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="99" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="100" fill="#fef08a" font-size="11" font-weight="600">material_id</text>
+    <text x="336" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="108" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="110" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="121" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="600">requirement_reference</text>
+    <text x="336" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">quantity_required</text>
+    <text x="336" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,3)</text>
+    <rect x="2" y="152" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">min_acceptable_purity</text>
+    <text x="336" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">max_acceptable_moisture</text>
+    <text x="336" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <rect x="2" y="196" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">max_unit_budget_inr</text>
+    <text x="336" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">max_distance_km</text>
+    <text x="336" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(8,2)</text>
+    <rect x="2" y="240" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">fulfillment_status</text>
+    <text x="336" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">required_by_date</text>
+    <text x="336" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">DATE</text>
+    <rect x="2" y="284" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="336" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="336" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table BYPRODUCT_LISTINGS -->
+  <g transform="translate(440, 560)" filter="url(#cardShadow)">
+    <rect width="340" height="364" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#0f766e" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#0d9488" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">BYPRODUCT_LISTINGS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Supply Inventory Marketplace</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">listing_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="77" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">facility_id</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="99" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="100" fill="#fef08a" font-size="11" font-weight="600">material_id</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="110" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="121" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="600">listing_reference</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">quantity_available</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,3)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">minimum_order_quantity</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,3)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">batch_purity_percent</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">moisture_content_percent</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">price_per_unit_inr</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,2)</text>
+    <rect x="2" y="240" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">storage_condition</text>
+    <text x="326" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">listing_status</text>
+    <text x="326" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <rect x="2" y="284" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">expires_at</text>
+    <text x="326" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="326" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <rect x="2" y="328" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="342" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="326" y="342" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table MATCH_PROPOSALS -->
+  <g transform="translate(840, 560)" filter="url(#cardShadow)">
+    <rect width="340" height="342" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#78350f" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#d97706" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">MATCH_PROPOSALS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Algorithmic Matchmaking Engine</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">proposal_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="77" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">listing_id</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="99" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="100" fill="#fef08a" font-size="11" font-weight="600">requirement_id</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">proposed_quantity</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,3)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">unit_price_inr</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,2)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">calculated_distance_km</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(8,2)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">purity_match_score</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">distance_match_score</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">price_match_score</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <rect x="2" y="240" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">compatibility_score</text>
+    <text x="326" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">proposal_status</text>
+    <text x="326" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <rect x="2" y="284" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="326" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="326" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table EXCHANGE_TRANSACTIONS -->
+  <g transform="translate(1240, 560)" filter="url(#cardShadow)">
+    <rect width="350" height="364" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 340 0 Q 350 0 350 10 L 350 44 L 0 44 Z" fill="#831843" />
+    <line x1="0" y1="44" x2="350" y2="44" stroke="#db2777" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">EXCHANGE_TRANSACTIONS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Legally Binding Commercial Contracts</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">transaction_id</text>
+    <text x="336" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="8" y="66" width="32" height="15" rx="3" fill="#581c87" />
+    <text x="11" y="77" fill="#e9d5ff" font-size="8" font-weight="700">FK/UK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">proposal_id</text>
+    <text x="336" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="99" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="100" fill="#fef08a" font-size="11" font-weight="600">seller_facility_id</text>
+    <text x="336" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="108" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="110" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="121" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="122" fill="#fef08a" font-size="11" font-weight="600">buyer_facility_id</text>
+    <text x="336" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="132" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="143" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="144" fill="#fef08a" font-size="11" font-weight="600">material_id</text>
+    <text x="336" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="152" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="154" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="165" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="600">transaction_reference</text>
+    <text x="336" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">agreed_quantity</text>
+    <text x="336" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,3)</text>
+    <rect x="2" y="196" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">agreed_unit_price_inr</text>
+    <text x="336" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">agreed_total_inr</text>
+    <text x="336" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,2)</text>
+    <rect x="2" y="240" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">transaction_status</text>
+    <text x="336" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">payment_status</text>
+    <text x="336" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <rect x="2" y="284" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">contract_signed_at</text>
+    <text x="336" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">created_at</text>
+    <text x="336" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <rect x="2" y="328" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="342" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="336" y="342" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table LOGISTICS_TRANSITS -->
+  <g transform="translate(440, 1020)" filter="url(#cardShadow)">
+    <rect width="340" height="342" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#1e293b" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#475569" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">LOGISTICS_TRANSITS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Physical Logistics & Weighbridge</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">transit_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="66" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="77" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">transaction_id</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="12" y="88" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="99" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="100" fill="#fef08a" font-size="11" font-weight="600">carrier_org_id</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="110" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="121" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="600">transit_reference</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <rect x="12" y="132" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="143" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="600">e_way_bill_number</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">vehicle_registration_no</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">transit_status</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(24)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">weighbridge_gross_kg</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">weighbridge_tare_kg</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,2)</text>
+    <rect x="2" y="240" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="8" y="242" width="32" height="15" rx="3" fill="#312e81" />
+    <text x="11" y="253" fill="#c7d2fe" font-size="8" font-weight="700">GEN</text>
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="600">weighbridge_net_kg</text>
+    <text x="326" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">GENERATED</text>
+    <text x="44" y="276" fill="#e2e8f0" font-size="11" font-weight="400">dispatch_date</text>
+    <text x="326" y="276" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <rect x="2" y="284" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="298" fill="#e2e8f0" font-size="11" font-weight="400">delivery_date</text>
+    <text x="326" y="298" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+    <text x="44" y="320" fill="#e2e8f0" font-size="11" font-weight="400">updated_at</text>
+    <text x="326" y="320" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table ESG_IMPACT_METRICS -->
+  <g transform="translate(840, 1020)" filter="url(#cardShadow)">
+    <rect width="340" height="254" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 330 0 Q 340 0 340 10 L 340 44 L 0 44 Z" fill="#14532d" />
+    <line x1="0" y1="44" x2="340" y2="44" stroke="#16a34a" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">ESG_IMPACT_METRICS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Certified Environmental Ledger</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">metric_id</text>
+    <text x="326" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="64" width="336" height="22" fill="#111827" opacity="0.6" />
+    <rect x="8" y="66" width="32" height="15" rx="3" fill="#581c87" />
+    <text x="11" y="77" fill="#e9d5ff" font-size="8" font-weight="700">FK/UK</text>
+    <text x="44" y="78" fill="#fef08a" font-size="11" font-weight="600">transaction_id</text>
+    <text x="326" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <text x="44" y="100" fill="#e2e8f0" font-size="11" font-weight="400">landfill_tonnes_diverted</text>
+    <text x="326" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,4)</text>
+    <rect x="2" y="108" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">co2e_tonnes_avoided</text>
+    <text x="326" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,4)</text>
+    <text x="44" y="144" fill="#e2e8f0" font-size="11" font-weight="400">virgin_saved_tonnes</text>
+    <text x="326" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,4)</text>
+    <rect x="2" y="152" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">water_saved_m3</text>
+    <text x="326" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(12,4)</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">economic_saved_inr</text>
+    <text x="326" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(14,2)</text>
+    <rect x="2" y="196" width="336" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="400">circularity_index_score</text>
+    <text x="326" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">NUMERIC(5,2)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">calculated_at</text>
+    <text x="326" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <!-- Table AUDIT_LOGS -->
+  <g transform="translate(1240, 1020)" filter="url(#cardShadow)">
+    <rect width="350" height="276" rx="10" fill="#0d1322" stroke="#1e293b" stroke-width="1.5" />
+    <path d="M 0 10 Q 0 0 10 0 L 340 0 Q 350 0 350 10 L 350 44 L 0 44 Z" fill="#3b0764" />
+    <line x1="0" y1="44" x2="350" y2="44" stroke="#9333ea" stroke-width="2" />
+    <text x="16" y="24" fill="#ffffff" font-size="14" font-weight="700" letter-spacing="0.3">AUDIT_LOGS</text>
+    <text x="16" y="38" fill="#94a3b8" font-size="10" font-weight="500">Cryptographic Tamper-Evident Ledger</text>
+    <rect x="12" y="44" width="24" height="15" rx="3" fill="#1e3a8a" />
+    <text x="16" y="55" fill="#93c5fd" font-size="9" font-weight="700">PK</text>
+    <text x="44" y="56" fill="#f8fafc" font-size="11" font-weight="600">log_id</text>
+    <text x="336" y="56" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">BIGSERIAL</text>
+    <rect x="2" y="64" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="78" fill="#e2e8f0" font-size="11" font-weight="400">entity_type</text>
+    <text x="336" y="78" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(50)</text>
+    <text x="44" y="100" fill="#e2e8f0" font-size="11" font-weight="400">entity_id</text>
+    <text x="336" y="100" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(64)</text>
+    <rect x="2" y="108" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="122" fill="#e2e8f0" font-size="11" font-weight="400">action</text>
+    <text x="336" y="122" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">VARCHAR(32)</text>
+    <rect x="12" y="132" width="24" height="15" rx="3" fill="#78350f" />
+    <text x="17" y="143" fill="#fde047" font-size="9" font-weight="700">FK</text>
+    <text x="44" y="144" fill="#fef08a" font-size="11" font-weight="600">performed_by_org_id</text>
+    <text x="336" y="144" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">UUID</text>
+    <rect x="2" y="152" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="166" fill="#e2e8f0" font-size="11" font-weight="400">previous_state</text>
+    <text x="336" y="166" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">JSONB</text>
+    <text x="44" y="188" fill="#e2e8f0" font-size="11" font-weight="400">new_state</text>
+    <text x="336" y="188" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">JSONB</text>
+    <rect x="2" y="196" width="346" height="22" fill="#111827" opacity="0.6" />
+    <rect x="12" y="198" width="24" height="15" rx="3" fill="#064e3b" />
+    <text x="16" y="209" fill="#6ee7b7" font-size="9" font-weight="700">UK</text>
+    <text x="44" y="210" fill="#e2e8f0" font-size="11" font-weight="600">sha256_checksum</text>
+    <text x="336" y="210" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">CHAR(64)</text>
+    <text x="44" y="232" fill="#e2e8f0" font-size="11" font-weight="400">previous_log_checksum</text>
+    <text x="336" y="232" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">CHAR(64)</text>
+    <rect x="2" y="240" width="346" height="22" fill="#111827" opacity="0.6" />
+    <text x="44" y="254" fill="#e2e8f0" font-size="11" font-weight="400">logged_at</text>
+    <text x="336" y="254" text-anchor="end" fill="#64748b" font-size="10" font-family="monospace">TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(50, 1445)">
+    <text x="0" y="0" fill="#475569" font-size="11">Architecture: Boyce-Codd Normal Form (BCNF) Relational Schema | PostgreSQL 14+ Engine | Dual ANSI SQL Standard</text>
+  </g>
+</svg>
